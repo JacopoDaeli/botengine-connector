@@ -97,7 +97,7 @@ exports.receivedDeliveryConfirmation = function receivedDeliveryConfirmation (ev
   const sequenceNumber = delivery.seq
 
   if (messageIDs) {
-    messageIDs.forEach(function(messageID) {
+    messageIDs.forEach((messageID) => {
       console.log('Received delivery confirmation for message ID: %s',
         messageID)
     })
@@ -198,8 +198,11 @@ exports.callSendAPI = function callSendAPI (messageData) {
         messageId, recipientId)
     } else {
       console.error('Unable to send message.')
-      console.error(response)
-      console.error(error)
+      if (error) {
+        console.error(error)
+      } else if (response.body.error) {
+        console.error('Error: ', response.body.error)
+      }
     }
   })
 }
