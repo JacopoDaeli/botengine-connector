@@ -4,23 +4,14 @@ FROM node:4.2.4
 # File Author / Maintainer
 MAINTAINER Jacopo Daeli <jacopo.daeli@gmail.com>
 
-# Copy package.json file
-COPY ./package.json /src
+# Bundle app source
+COPY . /src
 
 # Change working directory
 WORKDIR /src
 
 # Install app dependencies
 RUN npm install
-
-# Change working directory
-WORKDIR /
-
-# Bundle app source
-COPY . /src
-
-# Change working directory
-WORKDIR /src
 
 # Expose port app is running on
 EXPOSE 5000
