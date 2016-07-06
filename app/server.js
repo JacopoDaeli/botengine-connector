@@ -13,7 +13,7 @@ const msn = require('./messenger')
 const cm = config.messenger
 const app = express()
 
-app.use(bodyParser.json({ verify: verifyRequestSignature }))
+app.use(bodyParser.json({ verify: msn.verifyRequestSignature }))
 // app.use(express.static('public'))
 
 app.get('/webhook', (req, res) => {

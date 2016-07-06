@@ -38,7 +38,7 @@ exports.receivedAuthentication = function receivedAuthentication (event) {
   const passThroughParam = event.optin.ref
 
   console.log('Received authentication for user %d and page %d with pass ' +
-    'through param '%s' at %d', senderID, recipientID, passThroughParam, timeOfAuth)
+    'through param \'%s\' at %d', senderID, recipientID, passThroughParam, timeOfAuth)
 
   // When an authentication is received, we'll send a message back to the sender
   // to let them know it was successful.
@@ -115,7 +115,7 @@ exports.receivedPostback = function receivedPostback (event) {
   // button for Structured Messages.
   const payload = event.postback.payload
 
-  console.log('Received postback for user %d and page %d with payload '%s' ' +
+  console.log('Received postback for user %d and page %d with payload \'%s\' ' +
     'at %d', senderID, recipientID, payload, timeOfPostback)
 
   // When a postback is called, we'll send a message back to the sender to
