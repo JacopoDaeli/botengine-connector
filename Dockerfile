@@ -16,4 +16,4 @@ RUN npm install
 # Expose port app is running on
 EXPOSE 5000
 
-CMD ["node", "index.js"]
+CMD ["node", "app/server.js"]
