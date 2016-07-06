@@ -65,23 +65,23 @@ exports.receivedMessage = function receivedMessage (event) {
   if (messageText) {
     switch (messageText) {
       case 'image':
-        sendImageMessage(senderID)
+        exports.sendImageMessage(senderID)
         break
 
       case 'button':
-        sendButtonMessage(senderID)
+        exports.sendButtonMessage(senderID)
         break
 
       case 'generic':
-        sendGenericMessage(senderID)
+        exports.sendGenericMessage(senderID)
         break
 
       case 'receipt':
-        sendReceiptMessage(senderID)
+        exports.sendReceiptMessage(senderID)
         break
 
       default:
-        sendTextMessage(senderID, messageText)
+        exports.sendTextMessage(senderID, messageText)
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, 'Message with attachment received')
@@ -133,7 +133,7 @@ exports.sendTextMessage = function sendTextMessage (recipientId, messageText) {
     }
   }
 
-  callSendAPI(messageData)
+  exports.callSendAPI(messageData)
 }
 
 exports.sendGenericMessage = function sendGenericMessage (recipientId) {
@@ -180,7 +180,7 @@ exports.sendGenericMessage = function sendGenericMessage (recipientId) {
     }
   }
 
-  callSendAPI(messageData)
+  exports.callSendAPI(messageData)
 }
 
 exports.callSendAPI = function callSendAPI (messageData) {
