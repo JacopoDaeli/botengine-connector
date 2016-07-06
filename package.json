@@ -1,0 +1,32 @@
+{
+  "name": "botengine-connector",
+  "version": "0.0.1",
+  "description": "A service for connecting BotEngine bots with third party services like FB Messenger, Slack, etc...",
+  "main": "app/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JacopoDaeli/botengine-connector.git"
+  },
+  "keywords": [
+    "bot",
+    "wit",
+    "ai",
+    "nlp"
+  ],
+  "author": "Jacopo Daeli <jacopo.daeli@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JacopoDaeli/botengine-connector/issues"
+  },
+  "homepage": "https://github.com/JacopoDaeli/botengine-connector#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "fb-messenger": "^1.0.0",
+    "ioredis": "^2.2.0",
+    "request": "^2.72.0"
+  }
+}
