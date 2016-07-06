@@ -7,8 +7,14 @@ MAINTAINER Jacopo Daeli <jacopo.daeli@gmail.com>
 # Copy package.json file
 COPY ./package.json /src
 
+# Change working directory
+WORKDIR /src
+
 # Install app dependencies
 RUN npm install
+
+# Change working directory
+WORKDIR /
 
 # Bundle app source
 COPY . /src
