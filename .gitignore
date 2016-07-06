@@ -41,6 +41,8 @@ jspm_packages
 
 # ENV
 .env
+.env.staging
+.env.production
 
 # Deploy
 dokku-deploy
