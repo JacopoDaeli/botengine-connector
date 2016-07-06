@@ -24,6 +24,7 @@
   "homepage": "https://github.com/JacopoDaeli/botengine-connector#readme",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "fb-messenger": "^1.0.0",
     "ioredis": "^2.2.0",
