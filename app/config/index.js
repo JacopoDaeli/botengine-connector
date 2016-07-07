@@ -14,7 +14,7 @@ module.exports = {
   botengine: {
     app: {
       id: process.env.BOTENGINE_APP_ID || 'YourAppId',
-      secret: process.env.BOTENGINE_APP_SECRET || 'YourAppSecret'
+      secret: process.env.BOTENGINE_APP_SECRET || 'YourAppSecret',
       endpoint: process.env.BOTENGINE_APP_ENDPOINT || 'http://localhost:3978/api/v1.0/messages'
     }
   }
