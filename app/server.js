@@ -13,6 +13,9 @@ const msn = require('./messenger')
 const cm = config.messenger
 const app = express()
 
+const fbids = msn.fbids
+const mUtils = msn.utils
+
 app.use(bodyParser.json({ verify: msn.verifyRequestSignature }))
 // app.use(express.static('public'))
 
@@ -27,7 +30,7 @@ app.get('/webhook', (req, res) => {
   }
 })
 
-app.post('/webhook', function (req, res) {
+app.post('/webhook', (req, res) => {
   const data = req.body
 
   // Make sure this is a page subscription
@@ -58,6 +61,19 @@ app.post('/webhook', function (req, res) {
     // Otherwise, the request will time out.
     res.sendStatus(200)
   }
+})
+
+app.post('/bot/v1.0/messages', (req, res) => {
+  // Sent to fb messenger
+  const message = req.body
+  const senderId = message.from.id
+  const text = message.text
+
+  fbids[senderId] = message
+
+  msn.sendTextMessage(senderId, text)
+
+  req.sendStatus(200)
 })
 
 // Start server

@@ -9,7 +9,10 @@ const config = require('./config')
 const cm = config.messenger
 const cmbe = cm.botengine
 
+exports.utils = mUtils
+
 const fbids = {} // Use redis in production
+exports.fbids = fbids
 
 exports.verifyRequestSignature = function verifyRequestSignature (req, res, buf) {
   const signature = req.headers['x-hub-signature']
@@ -31,8 +34,8 @@ exports.verifyRequestSignature = function verifyRequestSignature (req, res, buf)
 }
 
 exports.receivedAuthentication = function receivedAuthentication (event) {
-  const senderID = event.sender.id
-  const recipientID = event.recipient.id
+  const senderId = event.sender.id
+  const recipientId = event.recipient.id
   const timeOfAuth = event.timestamp
 
   // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
@@ -43,21 +46,21 @@ exports.receivedAuthentication = function receivedAuthentication (event) {
   const passThroughParam = event.optin.ref
 
   console.log('Received authentication for user %d and page %d with pass ' +
-    'through param \'%s\' at %d', senderID, recipientID, passThroughParam, timeOfAuth)
+    'through param \'%s\' at %d', senderId, recipientId, passThroughParam, timeOfAuth)
 
   // When an authentication is received, we'll send a message back to the sender
   // to let them know it was successful.
-  sendTextMessage(senderID, 'Authentication successful')
+  exports.sendTextMessage(senderId, 'Authentication successful')
 }
 
 exports.receivedMessage = function receivedMessage (event) {
-  const senderID = event.sender.id
-  const recipientID = event.recipient.id
+  const senderId = event.sender.id
+  const recipientId = event.recipient.id
   const timeOfMessage = event.timestamp
   const message = event.message
 
   console.log('Received message for user %d and page %d at %d with message:',
-    senderID, recipientID, timeOfMessage)
+    senderId, recipientId, timeOfMessage)
 
   console.log(JSON.stringify(message))
 
@@ -67,15 +70,15 @@ exports.receivedMessage = function receivedMessage (event) {
   const messageText = message.text
   const messageAttachments = message.attachments
 
-  // exports.sendGenericMessage(senderID)
+  // exports.sendGenericMessage(senderId)
 
   if (messageText) {
-    // Check if senderID started a conversation already
+    // Check if senderId started a conversation already
     let dataMessage = null
-    const senderContext = fbids[senderID]
+    const senderContext = fbids[senderId]
     if (!senderContext) {
       // Build the initial message to send to the Bot Connector
-      dataMessage = mUtils.createInitialMessage(senderID, messageText)
+      dataMessage = mUtils.createInitialMessage(senderId, messageText)
     } else {
       dataMessage = mUtils.createNextMessage(senderContext, messageText)
     }
@@ -91,22 +94,22 @@ exports.receivedMessage = function receivedMessage (event) {
       })
     })
     .then((resBody) => {
-      fbids[senderID] = resBody
-      sendTextMessage(senderID, resBody.text)
+      fbids[senderId] = resBody
+      exports.sendTextMessage(senderId, resBody.text)
     })
     .catch((err) => {
       console.error(err)
-      sendTextMessage(senderID, 'Oops! Something went wrong with your request.')
+      exports.sendTextMessage(senderId, 'Oops! Something went wrong with your request.')
     })
 
   } else if (messageAttachments) {
-    sendTextMessage(senderID, 'Sorry but I can\'t handle this request.')
+    exports.sendTextMessage(senderId, 'Sorry but I can\'t handle this request.')
   }
 }
 
 exports.receivedDeliveryConfirmation = function receivedDeliveryConfirmation (event) {
-  const senderID = event.sender.id
-  const recipientID = event.recipient.id
+  const senderId = event.sender.id
+  const recipientId = event.recipient.id
   const delivery = event.delivery
   const messageIDs = delivery.mids
   const watermark = delivery.watermark
@@ -123,8 +126,8 @@ exports.receivedDeliveryConfirmation = function receivedDeliveryConfirmation (ev
 }
 
 exports.receivedPostback = function receivedPostback (event) {
-  const senderID = event.sender.id
-  const recipientID = event.recipient.id
+  const senderId = event.sender.id
+  const recipientId = event.recipient.id
   const timeOfPostback = event.timestamp
 
   // The 'payload' param is a developer-defined field which is set in a postback
@@ -132,11 +135,11 @@ exports.receivedPostback = function receivedPostback (event) {
   const payload = event.postback.payload
 
   console.log('Received postback for user %d and page %d with payload \'%s\' ' +
-    'at %d', senderID, recipientID, payload, timeOfPostback)
+    'at %d', senderId, recipientId, payload, timeOfPostback)
 
   // When a postback is called, we'll send a message back to the sender to
   // let them know it was successful
-  sendTextMessage(senderID, 'Postback called')
+  exports.sendTextMessage(senderId, 'Postback called')
 }
 
 exports.sendTextMessage = function sendTextMessage (recipientId, messageText) {
