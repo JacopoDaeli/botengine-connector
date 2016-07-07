@@ -210,6 +210,8 @@ exports.sendGenericMessage = function sendGenericMessage (recipientId) {
 }
 
 exports.callSendAPI = function callSendAPI (messageData) {
+  console.log('calling callSendAPI')
+  console.log(messageData)
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: cm.pageAccessToken },
