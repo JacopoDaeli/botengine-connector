@@ -93,9 +93,10 @@ exports.receivedMessage = function receivedMessage (event) {
         if (err) return reject(err)
         if (httpResponse.statusCode > 399) return reject(httpResponse)
         try {
-          console.log('Printing resBody...')
-          console.log(body)
-          const parsedBody = JSON.parse(body)
+          let parsedBody = body
+          if (typeof body === 'string') {
+            parsedBody = JSON.parse(body)
+          }
           resolve(parsedBody)
         } catch (e) {
           reject(e)
