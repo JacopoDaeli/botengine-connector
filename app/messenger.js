@@ -88,10 +88,7 @@ exports.receivedMessage = function receivedMessage (event) {
         url: cbe.app.endpoint,
         method: 'POST',
         json: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataMessage)
+        body: dataMessage
       }, (err, httpResponse, body) => {
         if (err) return reject(err)
         if (httpResponse.statusCode > 399) return reject(httpResponse)
