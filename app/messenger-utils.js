@@ -47,10 +47,28 @@ exports.createInitialMessage = function createInitialMessage (fbid, text) {
   }
 }
 
-exports.createNextMessage = function createNextMessage (senderContext, text) {
+exports.createNextMessage = function createNextMessage (fbid, senderContext, text) {
+  const from = {
+    name: fbid,
+    channelId: 'fbmessenger',
+    address: fbid,
+    id: fbid,
+    isBot: false
+  }
+  const to = {
+    name: cbe.app.id,
+    channelId: 'fbmessenger',
+    address: cbe.app.id,
+    id: cbe.app.id,
+    isBot: true
+  }
+
   const nextMessage = Object.assign({}, senderContext)
   nextMessage.id = exports.generateRandomSHA1()
   nextMessage.channelMessageId = exports.generateRandomSHA1()
   nextMessage.text = text
+  nextMessage.from = from
+  nextMessage.to = to
+  nextMessage.participants: [from, to],
   return nextMessage
 }

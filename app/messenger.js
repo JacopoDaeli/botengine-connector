@@ -105,7 +105,7 @@ exports.receivedMessage = function receivedMessage (event) {
       exports.sendTextMessage(senderId, resBody.text)
     })
     .catch((err) => {
-      console.error(err)
+      console.error(err.stack)
       exports.sendTextMessage(senderId, 'Oops! Something went wrong with your request.')
     })
 

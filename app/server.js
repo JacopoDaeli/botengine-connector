@@ -68,7 +68,7 @@ app.post('/webhook', jsonParserWithSignature, (req, res) => {
 app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
   // Sent to fb messenger
   const message = req.body
-  const senderId = message.from.id
+  const senderId = message.to.id
   const text = message.text
 
   fbids[senderId] = message
