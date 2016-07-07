@@ -80,9 +80,6 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
   res.sendStatus(200)
 })
 
-// Start server
-// Webhooks must be available via SSL with a certificate signed by a valid
-// certificate authority.
 app.listen(config.app.port, () => {
   console.log(`${config.app.name} is running on port ${config.app.port}.`)
 })
