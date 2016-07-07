@@ -12,13 +12,10 @@ module.exports = {
     pageAccessToken: process.env.MESSENGER_PAGE_ACCESS_TOKEN
   },
   botengine: {
-    botUrl: process.env.BOTENGINE_BOT_URL || 'http://127.0.0.1:3978',
-    endpoints: {
-      messages: '/api/v1/messages'
-    },
     app: {
       id: process.env.BOTENGINE_APP_ID || 'YourAppId',
       secret: process.env.BOTENGINE_APP_SECRET || 'YourAppSecret'
-    }
+    },
+    botEndpoint: process.env.BOTENGINE_BOT_ENDPOINT || 'http://localhost:3978/api/v1.0/messages'
   }
 }

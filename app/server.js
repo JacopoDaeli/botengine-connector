@@ -80,7 +80,7 @@ app.post('/bot/v1.0/messages', (req, res) => {
 // Webhooks must be available via SSL with a certificate signed by a valid
 // certificate authority.
 app.listen(config.app.port, () => {
-  console.log(`Node app is running on port ${config.app.port}.`)
+  console.log(`${config.app.name} is running on port ${config.app.port}.`)
 })
 
 module.exports = app

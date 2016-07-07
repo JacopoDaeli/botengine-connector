@@ -85,7 +85,7 @@ exports.receivedMessage = function receivedMessage (event) {
 
     new Promise((resolve, reject) => {
       request.post({
-        url: `${cmbe.botUrl}${cmbe.endpoints.messages}`,
+        url: cmbe.botEndpoint,
         form: dataMessage
       }, (err, httpResponse, body) => {
         if (err) return reject(err)
