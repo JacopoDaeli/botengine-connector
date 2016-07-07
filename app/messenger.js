@@ -91,7 +91,7 @@ exports.receivedMessage = function receivedMessage (event) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataMessage)
+        body: dataMessage
       }, (err, httpResponse, body) => {
         if (err) return reject(err)
         if (httpResponse.statusCode > 399) return reject(httpResponse)
