@@ -84,9 +84,14 @@ exports.receivedMessage = function receivedMessage (event) {
     }
 
     new Promise((resolve, reject) => {
-      request.post({
+      request({
         url: cbe.app.endpoint,
-        form: dataMessage
+        method: 'POST',
+        json: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataMessage)
       }, (err, httpResponse, body) => {
         if (err) return reject(err)
         if (httpResponse.statusCode > 399) return reject(httpResponse)
