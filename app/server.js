@@ -16,8 +16,10 @@ const app = express()
 const fbids = msn.fbids
 const mUtils = msn.utils
 
-app.use(bodyParser.json({ verify: msn.verifyRequestSignature }))
-// app.use(express.static('public'))
+const jsonParser = bodyParser.json()
+const jsonParserWithSignature = bodyParser.json({
+  verify: msn.verifyRequestSignature
+})
 
 app.get('/webhook', (req, res) => {
   if (req.query['hub.mode'] === 'subscribe' &&
@@ -30,7 +32,7 @@ app.get('/webhook', (req, res) => {
   }
 })
 
-app.post('/webhook', (req, res) => {
+app.post('/webhook', jsonParserWithSignature, (req, res) => {
   const data = req.body
 
   // Make sure this is a page subscription
@@ -63,7 +65,7 @@ app.post('/webhook', (req, res) => {
   }
 })
 
-app.post('/bot/v1.0/messages', (req, res) => {
+app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
   // Sent to fb messenger
   const message = req.body
   const senderId = message.from.id
