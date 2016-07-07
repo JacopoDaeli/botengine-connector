@@ -75,7 +75,7 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
 
   msn.sendTextMessage(senderId, text)
 
-  req.sendStatus(200)
+  res.sendStatus(200)
 })
 
 // Start server
