@@ -2,9 +2,14 @@
 
 const crypto = require('crypto')
 const request = require('request')
+const shortid = require('shortid')
 
+const mUtils = require('./messenger-utils')
 const config = require('./config')
 const cm = config.messenger
+const cmbe = cm.botengine
+
+const fbids = {} // Use redis in production
 
 exports.verifyRequestSignature = function verifyRequestSignature (req, res, buf) {
   const signature = req.headers['x-hub-signature']
@@ -62,29 +67,40 @@ exports.receivedMessage = function receivedMessage (event) {
   const messageText = message.text
   const messageAttachments = message.attachments
 
+  // exports.sendGenericMessage(senderID)
+
   if (messageText) {
-    switch (messageText) {
-      case 'image':
-        exports.sendImageMessage(senderID)
-        break
-
-      case 'button':
-        exports.sendButtonMessage(senderID)
-        break
-
-      case 'generic':
-        exports.sendGenericMessage(senderID)
-        break
-
-      case 'receipt':
-        exports.sendReceiptMessage(senderID)
-        break
-
-      default:
-        exports.sendTextMessage(senderID, messageText)
+    // Check if senderID started a conversation already
+    let dataMessage = null
+    const senderContext = fbids[senderID]
+    if (!senderContext) {
+      // Build the initial message to send to the Bot Connector
+      dataMessage = mUtils.createInitialMessage(senderID, messageText)
+    } else {
+      dataMessage = mUtils.createNextMessage(senderContext, messageText)
     }
+
+    new Promise((resolve, reject) => {
+      request.post({
+        url: `${cmbe.botUrl}${cmbe.endpoints.messages}`,
+        form: dataMessage
+      }, (err, httpResponse, body) => {
+        if (err) return reject(err)
+        if (httpResponse.statusCode > 399) return reject(httpResponse)
+        resolve(JSON.parse(body))
+      })
+    })
+    .then((resBody) => {
+      fbids[senderID] = resBody
+      sendTextMessage(senderID, resBody.text)
+    })
+    .catch((err) => {
+      console.error(err)
+      sendTextMessage(senderID, 'Oops! Something went wrong with your request.')
+    })
+
   } else if (messageAttachments) {
-    sendTextMessage(senderID, 'Message with attachment received')
+    sendTextMessage(senderID, 'Sorry but I can\'t handle this request.')
   }
 }
 
@@ -190,7 +206,7 @@ exports.callSendAPI = function callSendAPI (messageData) {
     method: 'POST',
     json: messageData
   }, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
+    if (!error && response.statusCode === 200) {
       const recipientId = body.recipient_id
       const messageId = body.message_id
 

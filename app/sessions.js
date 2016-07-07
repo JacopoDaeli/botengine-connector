@@ -2,10 +2,6 @@
 
 const uuid = require('node-uuid')
 
-// This will contain all user sessions.
-// Each session has an entry:
-// sessionId -> { fbid: facebookUserId, context: sessionState }
-
 module.exports = {
   list: {},
   findOrCreateSession (fbid) {
@@ -20,7 +16,7 @@ module.exports = {
     if (!sessionId) {
       // No session found for user fbid, let's create a new one
       sessionId = uuid.v1()
-      this.list[sessionId] = { fbid, context: {}, lastAction: null }
+      this.list[sessionId] = { fbid, context: {} }
     }
 
     return sessionId
