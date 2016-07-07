@@ -62,8 +62,6 @@ exports.receivedMessage = function receivedMessage (event) {
   console.log('Received message for user %d and page %d at %d with message:',
     senderId, recipientId, timeOfMessage)
 
-  console.log(JSON.stringify(message))
-
   const messageId = message.mid
 
   // You may get a text or attachment but not both
@@ -97,6 +95,7 @@ exports.receivedMessage = function receivedMessage (event) {
           if (typeof body === 'string') {
             parsedBody = JSON.parse(body)
           }
+          console.log(JSON.stringify(parsedBody))
           resolve(parsedBody)
         } catch (e) {
           reject(e)
@@ -213,8 +212,6 @@ exports.sendGenericMessage = function sendGenericMessage (recipientId) {
 }
 
 exports.callSendAPI = function callSendAPI (messageData) {
-  console.log('calling callSendAPI')
-  console.log(messageData)
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: cm.pageAccessToken },

@@ -73,9 +73,7 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
 
   fbids[senderId] = message
 
-  console.log(message)
-
-  console.log(senderId)
+  console.log(JSON.stringify(message))
 
   msn.sendTextMessage(senderId, text)
 
