@@ -3,7 +3,7 @@
 const crypto = require('crypto')
 const shortid = require('shortid')
 const config = require('./config')
-const mca = config.messenger.app
+const cbe = config.botengine
 
 let nConversations = 0 // Use redis in production
 
@@ -22,10 +22,10 @@ exports.createInitialMessage = function createInitialMessage (fbid, text) {
     isBot: false
   }
   const to = {
-    name: mca.id,
+    name: cbe.app.id,
     channelId: 'fbmessenger',
-    address: mca.id,
-    id: mca.id,
+    address: cbe.app.id,
+    id: cbe.app.id,
     isBot: true
   }
 

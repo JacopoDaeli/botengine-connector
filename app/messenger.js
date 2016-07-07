@@ -7,7 +7,7 @@ const shortid = require('shortid')
 const mUtils = require('./messenger-utils')
 const config = require('./config')
 const cm = config.messenger
-const cmbe = cm.botengine
+const cbe = config.botengine
 
 exports.utils = mUtils
 
@@ -85,7 +85,7 @@ exports.receivedMessage = function receivedMessage (event) {
 
     new Promise((resolve, reject) => {
       request.post({
-        url: cmbe.botEndpoint,
+        url: cbe.app.botEndpoint,
         form: dataMessage
       }, (err, httpResponse, body) => {
         if (err) return reject(err)
