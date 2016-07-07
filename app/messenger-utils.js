@@ -69,6 +69,6 @@ exports.createNextMessage = function createNextMessage (fbid, senderContext, tex
   nextMessage.text = text
   nextMessage.from = from
   nextMessage.to = to
-  nextMessage.participants: [from, to],
+  nextMessage.participants = [from, to]
   return nextMessage
 }
