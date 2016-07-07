@@ -92,7 +92,12 @@ exports.receivedMessage = function receivedMessage (event) {
       }, (err, httpResponse, body) => {
         if (err) return reject(err)
         if (httpResponse.statusCode > 399) return reject(httpResponse)
-        resolve(JSON.parse(body))
+        try {
+          const parsedBody = JSON.parse(body)
+          resolve(parsedBody)
+        } catch (e) {
+          reject(e)
+        }
       })
     })
     .then((resBody) => {
