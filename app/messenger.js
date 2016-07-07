@@ -78,7 +78,7 @@ exports.receivedMessage = function receivedMessage (event) {
       // Build the initial message to send to the Bot Connector
       dataMessage = mUtils.createInitialMessage(senderId, messageText)
     } else {
-      dataMessage = mUtils.createNextMessage(senderContext, messageText)
+      dataMessage = mUtils.createNextMessage(senderId, senderContext, messageText)
     }
 
     new Promise((resolve, reject) => {
