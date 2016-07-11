@@ -7,6 +7,8 @@ const cbe = config.botengine
 
 let nConversations = 0 // Use redis in production
 
+const firstMessages = {}
+
 exports.generateRandomSHA1 = function generateRandomSHA1() {
   const shasum = crypto.createHash('sha1')
   shasum.update(shortid.generate())
@@ -29,7 +31,7 @@ exports.createInitialMessage = function createInitialMessage(fbid, text) {
     isBot: true
   }
 
-  return {
+  const m = {
     type: 'Message',
     id: exports.generateRandomSHA1(), // Randomly generated each time
     conversationId: shortid.generate(), // Randomly generated at the beginning of the conversation
@@ -45,6 +47,10 @@ exports.createInitialMessage = function createInitialMessage(fbid, text) {
     channelConversationId: `Conv_${++nConversations}`,
     hashtags: []
   }
+
+  firstMessages[fbid] = m
+
+  return m
 }
 
 exports.createNextMessage = function createNextMessage(fbid, senderContext, text) {
@@ -66,7 +72,7 @@ exports.createNextMessage = function createNextMessage(fbid, senderContext, text
   return {
     type: 'Message',
     id: exports.generateRandomSHA1(), // Randomly generated each time
-    conversationId: senderContext.conversationId, // Randomly generated at the beginning of the conversation
+    conversationId: firstMessages[fbid].conversationId, // Randomly generated at the beginning of the conversation
     created: (new Date()).toString(),
     text,
     botConversationData: senderContext.botConversationData,
@@ -79,7 +85,7 @@ exports.createNextMessage = function createNextMessage(fbid, senderContext, text
     totalParticipants: 2,
     mentions: [],
     channelMessageId: exports.generateRandomSHA1(), // Randomly generated each time
-    channelConversationId: senderContext.channelConversationId,
+    channelConversationId: firstMessages[fbid].channelConversationId,
     hashtags: []
   }
 }
