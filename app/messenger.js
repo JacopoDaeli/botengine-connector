@@ -81,6 +81,8 @@ exports.receivedMessage = function receivedMessage (event) {
       dataMessage = mUtils.createNextMessage(senderId, senderContext, messageText)
     }
 
+    console.log(dataMessage)
+
     new Promise((resolve, reject) => {
       request({
         url: cbe.app.endpoint,
@@ -95,7 +97,6 @@ exports.receivedMessage = function receivedMessage (event) {
           if (typeof body === 'string') {
             parsedBody = JSON.parse(body)
           }
-          console.log(JSON.stringify(parsedBody))
           resolve(parsedBody)
         } catch (e) {
           reject(e)
