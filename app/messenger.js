@@ -59,8 +59,10 @@ exports.receivedMessage = function receivedMessage (event) {
   const timeOfMessage = event.timestamp
   const message = event.message
 
-  console.log('Received message for user %d and page %d at %d with message:',
+  console.log('Received message for user %d and page %d at %d.',
     senderId, recipientId, timeOfMessage)
+
+
 
   const messageId = message.mid
 
@@ -81,6 +83,7 @@ exports.receivedMessage = function receivedMessage (event) {
       dataMessage = mUtils.createNextMessage(senderId, senderContext, messageText)
     }
 
+    console.log('Sending to whatson:')
     console.log(dataMessage)
 
     new Promise((resolve, reject) => {
@@ -104,6 +107,8 @@ exports.receivedMessage = function receivedMessage (event) {
       })
     })
     .then((resBody) => {
+      console.log('Whatson replyed:')
+      console.log(resBody)
       fbids[senderId] = resBody
       exports.sendTextMessage(senderId, resBody.text)
     })
