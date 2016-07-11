@@ -71,11 +71,13 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
   const senderId = message.to.id
   const text = message.text
 
-  fbids[senderId] = message
+  if (text) {
+    fbids[senderId] = message
 
-  console.log(JSON.stringify(message))
+    console.log(JSON.stringify(message))
 
-  msn.sendTextMessage(senderId, text)
+    msn.sendTextMessage(senderId, text)
+  }
 
   res.sendStatus(200)
 })
