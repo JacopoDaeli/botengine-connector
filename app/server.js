@@ -76,6 +76,8 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
 
     console.log(JSON.stringify(message))
 
+    let promptChoiceButtonsData = null
+
     if (message.botPerUserInConversationData && message.botPerUserInConversationData['BotBuilder.Data.SessionState']) {
       const callstack = message.botPerUserInConversationData['BotBuilder.Data.SessionState'].callstack
       const lastCall = callstack[callstack.length - 1]
