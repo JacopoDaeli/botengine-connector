@@ -224,10 +224,6 @@ exports.receivedPostback = function receivedPostback (event) {
     console.error(err.stack)
     exports.sendTextMessage(senderId, 'Oops! Something went wrong with your request.')
   })
-
-  // When a postback is called, we'll send a message back to the sender to
-  // let them know it was successful
-  exports.sendTextMessage(senderId, 'Postback called')
 }
 
 exports.sendTextMessage = function sendTextMessage (recipientId, messageText) {
