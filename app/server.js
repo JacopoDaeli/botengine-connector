@@ -87,9 +87,9 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
     }
 
     if (promptChoiceButtonsData) {
-      exports.sendPromptChoiceButtonStyle(senderId, text, promptChoiceButtonsData)
+      msn.sendPromptChoiceButtonStyle(senderId, text, promptChoiceButtonsData)
     } else {
-      exports.sendTextMessage(senderId, text)
+      msn.sendTextMessage(senderId, text)
     }
   }
 
