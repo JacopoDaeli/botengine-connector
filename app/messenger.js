@@ -116,10 +116,8 @@ exports.receivedMessage = function receivedMessage (event) {
       if (resBody.botPerUserInConversationData && resBody.botPerUserInConversationData['BotBuilder.Data.SessionState']) {
         const callstack = resBody.botPerUserInConversationData['BotBuilder.Data.SessionState'].callstack
         const lastCall = callstack[callstack.length - 1]
-        if (lastCall.id === 'BotBuilder.Dialogs.Prompt' && ) {
-          if (lastCall.state.listStyle === 'button') {
-            promptChoiceButtonsData = lastCall.state.enumValues
-          }
+        if (lastCall.id === 'BotBuilder.Dialogs.Prompt' && lastCall.state.listStyle === 'button') {
+          promptChoiceButtonsData = lastCall.state.enumValues
         }
       }
 
