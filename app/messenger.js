@@ -110,7 +110,24 @@ exports.receivedMessage = function receivedMessage (event) {
       console.log('Whatson replyed:')
       console.log(resBody)
       fbids[senderId] = resBody
-      exports.sendTextMessage(senderId, resBody.text)
+
+      let promptChoiceButtonsData = null
+
+      if (resBody.botPerUserInConversationData && resBody.botPerUserInConversationData['BotBuilder.Data.SessionState']) {
+        const callstack = resBody.botPerUserInConversationData['BotBuilder.Data.SessionState'].callstack
+        const lastCall = callstack[callstack.length - 1]
+        if (lastCall.id === 'BotBuilder.Dialogs.Prompt' && ) {
+          if (lastCall.state.listStyle === 'button') {
+            promptChoiceButtonsData = lastCall.state.enumValues
+          }
+        }
+      }
+
+      if (promptChoiceButtonsData) {
+        exports.sendPromptChoiceButtonStyle(senderId, resBody.text, promptChoiceButtonsData)
+      } else {
+        exports.sendTextMessage(senderId, resBody.text)
+      }
     })
     .catch((err) => {
       console.error(err.stack)
@@ -170,7 +187,15 @@ exports.sendTextMessage = function sendTextMessage (recipientId, messageText) {
   exports.callSendAPI(messageData)
 }
 
-exports.sendGenericMessage = function sendGenericMessage (recipientId) {
+exports.sendPromptChoiceButtonStyle = function sendPromptChoiceButtonStyle (recipientId, text, buttonsData) {
+  const buttons = buttonsData.map((btnData) => {
+    return {
+      type: 'postback',
+      title: btnData,
+      payload: btnData
+    }
+  })
+
   const messageData = {
     recipient: {
       id: recipientId
@@ -179,36 +204,9 @@ exports.sendGenericMessage = function sendGenericMessage (recipientId) {
       attachment: {
         type: 'template',
         payload: {
-          template_type: 'generic',
-          elements: [{
-            title: 'rift',
-            subtitle: 'Next-generation virtual reality',
-            item_url: 'https://www.oculus.com/en-us/rift/',
-            image_url: 'http://messengerdemo.parseapp.com/img/rift.png',
-            buttons: [{
-              type: 'web_url',
-              url: 'https://www.oculus.com/en-us/rift/',
-              title: 'Open Web URL'
-            }, {
-              type: 'postback',
-              title: 'Call Postback',
-              payload: 'Payload for first bubble',
-            }],
-          }, {
-            title: 'touch',
-            subtitle: 'Your Hands, Now in VR',
-            item_url: 'https://www.oculus.com/en-us/touch/',
-            image_url: 'http://messengerdemo.parseapp.com/img/touch.png',
-            buttons: [{
-              type: 'web_url',
-              url: 'https://www.oculus.com/en-us/touch/',
-              title: 'Open Web URL'
-            }, {
-              type: 'postback',
-              title: 'Call Postback',
-              payload: 'Payload for second bubble',
-            }]
-          }]
+          template_type: 'button',
+          text,
+          buttons
         }
       }
     }
