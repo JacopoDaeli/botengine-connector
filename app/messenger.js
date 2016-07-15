@@ -162,10 +162,68 @@ exports.receivedPostback = function receivedPostback (event) {
 
   // The 'payload' param is a developer-defined field which is set in a postback
   // button for Structured Messages.
-  const payload = event.postback.payload
+  const messageText = event.postback.payload
 
   console.log('Received postback for user %d and page %d with payload \'%s\' ' +
     'at %d', senderId, recipientId, payload, timeOfPostback)
+
+  let dataMessage = null
+  const senderContext = fbids[senderId]
+  if (!senderContext) {
+    // Build the initial message to send to the Bot Connector
+    dataMessage = mUtils.createInitialMessage(senderId, messageText)
+  } else {
+    dataMessage = mUtils.createNextMessage(senderId, senderContext, messageText)
+  }
+
+  console.log('Sending to whatson:')
+  console.log(dataMessage)
+
+  new Promise((resolve, reject) => {
+    request({
+      url: cbe.app.endpoint,
+      method: 'POST',
+      json: true,
+      body: dataMessage
+    }, (err, httpResponse, body) => {
+      if (err) return reject(err)
+      if (httpResponse.statusCode > 399) return reject(httpResponse)
+      try {
+        let parsedBody = body
+        if (typeof body === 'string') {
+          parsedBody = JSON.parse(body)
+        }
+        resolve(parsedBody)
+      } catch (e) {
+        reject(e)
+      }
+    })
+  })
+  .then((resBody) => {
+    console.log('Whatson replyed:')
+    console.log(resBody)
+    fbids[senderId] = resBody
+
+    let promptChoiceButtonsData = null
+
+    if (resBody.botPerUserInConversationData && resBody.botPerUserInConversationData['BotBuilder.Data.SessionState']) {
+      const callstack = resBody.botPerUserInConversationData['BotBuilder.Data.SessionState'].callstack
+      const lastCall = callstack[callstack.length - 1]
+      if (lastCall.id === 'BotBuilder.Dialogs.Prompt' && lastCall.state.listStyle === 'button') {
+        promptChoiceButtonsData = lastCall.state.enumValues
+      }
+    }
+
+    if (promptChoiceButtonsData) {
+      exports.sendPromptChoiceButtonStyle(senderId, resBody.text, promptChoiceButtonsData)
+    } else {
+      exports.sendTextMessage(senderId, resBody.text)
+    }
+  })
+  .catch((err) => {
+    console.error(err.stack)
+    exports.sendTextMessage(senderId, 'Oops! Something went wrong with your request.')
+  })
 
   // When a postback is called, we'll send a message back to the sender to
   // let them know it was successful

@@ -52,8 +52,7 @@ app.post('/webhook', jsonParserWithSignature, (req, res) => {
         } else if (messagingEvent.delivery) {
           msn.receivedDeliveryConfirmation(messagingEvent)
         } else if (messagingEvent.postback) {
-          // msn.receivedPostback(messagingEvent)
-          msn.receivedMessage(messagingEvent)
+          msn.receivedPostback(messagingEvent)
         } else {
           console.log('Webhook received unknown messagingEvent: ', messagingEvent)
         }
