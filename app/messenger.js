@@ -165,7 +165,7 @@ exports.receivedPostback = function receivedPostback (event) {
   const messageText = event.postback.payload
 
   console.log('Received postback for user %d and page %d with payload \'%s\' ' +
-    'at %d', senderId, recipientId, payload, timeOfPostback)
+    'at %d', senderId, recipientId, messageText, timeOfPostback)
 
   let dataMessage = null
   const senderContext = fbids[senderId]
