@@ -269,6 +269,8 @@ exports.sendBuyTicket = function sendBuyTicket (recipientId, url) {
       }
     }
   }
+
+  exports.callSendAPI(messageData)
 }
 
 exports.sendTextMessage = function sendTextMessage (recipientId, messageText) {
