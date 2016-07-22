@@ -258,7 +258,7 @@ exports.sendBuyTicket = function sendBuyTicket (recipientId, url) {
       attachment: {
         type: 'template',
         payload: {
-          template_type: button,
+          template_type: 'button',
           text: 'Buy a ticket',
           buttons: [{
             type: web_url,
