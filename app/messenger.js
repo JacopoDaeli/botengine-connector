@@ -259,7 +259,7 @@ exports.sendBuyTicket = function sendBuyTicket (recipientId, url) {
         type: 'template',
         payload: {
           template_type: 'button',
-          text: 'Buy a ticket',
+          text: 'You can buy a ticket now.',
           buttons: [{
             type: 'web_url',
             url,
