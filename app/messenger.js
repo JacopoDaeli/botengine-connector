@@ -138,7 +138,7 @@ exports.receivedMessage = function receivedMessage (event) {
       textLines.forEach((line, n) => {
         const index = Math.floor(n / 6)
         if (!subMsgs[index]) {
-          subMsgs[index] = index > 1 ? `\n${line}` : line
+          subMsgs[index] = `\n${line}`
         } else {
           subMsgs[index] += `\n${line}`
         }
@@ -261,7 +261,7 @@ exports.sendBuyTicket = function sendBuyTicket (recipientId, url) {
           template_type: 'button',
           text: 'Buy a ticket',
           buttons: [{
-            type: web_url,
+            type: 'web_url',
             url,
             title: 'Buy a ticket'
           }]
