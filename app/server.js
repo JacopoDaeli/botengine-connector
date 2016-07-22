@@ -92,7 +92,25 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
     //   msn.sendTextMessage(senderId, text)
     // }
 
-    msn.sendTextMessage(senderId, text)
+
+    const textLines = text.split('\n')
+
+    const subMsgs = []
+
+    textLines.forEach((line, n) => {
+      const index = Math.floor(n / 6)
+      if (!subMsgs[index]) {
+        subMsgs[index] = index > 1 ? `  ${line}` : line
+      } else {
+        subMsgs[index] += `\n${line}`
+      }
+    })
+
+    subMsgs.forEach((subMsg, index) => {
+      setTimeout(() => {
+        msn.sendTextMessage(senderId, subMsg)
+      }, index * 50)
+    })
   }
 
   res.sendStatus(200)
