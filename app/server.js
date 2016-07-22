@@ -76,21 +76,23 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
 
     console.log(JSON.stringify(message))
 
-    let promptChoiceButtonsData = null
+    // let promptChoiceButtonsData = null
+    //
+    // if (message.botPerUserInConversationData && message.botPerUserInConversationData['BotBuilder.Data.SessionState']) {
+    //   const callstack = message.botPerUserInConversationData['BotBuilder.Data.SessionState'].callstack
+    //   const lastCall = callstack[callstack.length - 1]
+    //   if (lastCall.id === 'BotBuilder.Dialogs.Prompt' && lastCall.state.listStyle === 'button') {
+    //     promptChoiceButtonsData = lastCall.state.enumValues
+    //   }
+    // }
+    //
+    // if (promptChoiceButtonsData) {
+    //   msn.sendPromptChoiceButtonStyle(senderId, text, promptChoiceButtonsData)
+    // } else {
+    //   msn.sendTextMessage(senderId, text)
+    // }
 
-    if (message.botPerUserInConversationData && message.botPerUserInConversationData['BotBuilder.Data.SessionState']) {
-      const callstack = message.botPerUserInConversationData['BotBuilder.Data.SessionState'].callstack
-      const lastCall = callstack[callstack.length - 1]
-      if (lastCall.id === 'BotBuilder.Dialogs.Prompt' && lastCall.state.listStyle === 'button') {
-        promptChoiceButtonsData = lastCall.state.enumValues
-      }
-    }
-
-    if (promptChoiceButtonsData) {
-      msn.sendPromptChoiceButtonStyle(senderId, text, promptChoiceButtonsData)
-    } else {
-      msn.sendTextMessage(senderId, text)
-    }
+    msn.sendTextMessage(senderId, text)
   }
 
   res.sendStatus(200)

@@ -111,21 +111,40 @@ exports.receivedMessage = function receivedMessage (event) {
       console.log(resBody)
       fbids[senderId] = resBody
 
-      let promptChoiceButtonsData = null
+      // let promptChoiceButtonsData = null
+      //
+      // if (resBody.botPerUserInConversationData && resBody.botPerUserInConversationData['BotBuilder.Data.SessionState']) {
+      //   const callstack = resBody.botPerUserInConversationData['BotBuilder.Data.SessionState'].callstack
+      //   const lastCall = callstack[callstack.length - 1]
+      //   if (lastCall.id === 'BotBuilder.Dialogs.Prompt' && lastCall.state.listStyle === 'button') {
+      //     promptChoiceButtonsData = lastCall.state.enumValues
+      //   }
+      // }
+      //
+      // if (promptChoiceButtonsData) {
+      //   exports.sendPromptChoiceButtonStyle(senderId, resBody.text, promptChoiceButtonsData)
+      // } else {
+      //   exports.sendTextMessage(senderId, resBody.text)
+      // }
 
-      if (resBody.botPerUserInConversationData && resBody.botPerUserInConversationData['BotBuilder.Data.SessionState']) {
-        const callstack = resBody.botPerUserInConversationData['BotBuilder.Data.SessionState'].callstack
-        const lastCall = callstack[callstack.length - 1]
-        if (lastCall.id === 'BotBuilder.Dialogs.Prompt' && lastCall.state.listStyle === 'button') {
-          promptChoiceButtonsData = lastCall.state.enumValues
+      const textLines = resBody.text.split('\n')
+
+      const subMsgs = []
+
+      textLines.forEach((line, n) => {
+        const index = Math.floor(n / 6)
+        if (!subMsgs[index]) {
+          subMsgs[index] = line
+        } else {
+          subMsgs[index] += `\n${line}`
         }
-      }
+      })
 
-      if (promptChoiceButtonsData) {
-        exports.sendPromptChoiceButtonStyle(senderId, resBody.text, promptChoiceButtonsData)
-      } else {
-        exports.sendTextMessage(senderId, resBody.text)
-      }
+      subMsgs.forEach((subMsg, index) => {
+        setTimeout(() => {
+          exports.sendTextMessage(senderId, subMsg)
+        }, index * 50)
+      })
     })
     .catch((err) => {
       console.error(err.stack)
