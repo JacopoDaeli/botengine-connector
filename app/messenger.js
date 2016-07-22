@@ -134,7 +134,7 @@ exports.receivedMessage = function receivedMessage (event) {
       textLines.forEach((line, n) => {
         const index = Math.floor(n / 6)
         if (!subMsgs[index]) {
-          subMsgs[index] = line
+          subMsgs[index] = index > 1 ? `  ${line}` : line
         } else {
           subMsgs[index] += `\n${line}`
         }
