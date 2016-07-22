@@ -134,7 +134,7 @@ exports.receivedMessage = function receivedMessage (event) {
       textLines.forEach((line, n) => {
         const index = Math.floor(n / 6)
         if (!subMsgs[index]) {
-          subMsgs[index] = index > 1 ? `  ${line}` : line
+          subMsgs[index] = index > 1 ? `\n${line}` : line
         } else {
           subMsgs[index] += `\n${line}`
         }
@@ -143,7 +143,7 @@ exports.receivedMessage = function receivedMessage (event) {
       subMsgs.forEach((subMsg, index) => {
         setTimeout(() => {
           exports.sendTextMessage(senderId, subMsg)
-        }, index * 50)
+        }, index * 500)
       })
     })
     .catch((err) => {

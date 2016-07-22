@@ -100,7 +100,7 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
     textLines.forEach((line, n) => {
       const index = Math.floor(n / 6)
       if (!subMsgs[index]) {
-        subMsgs[index] = index > 1 ? `  ${line}` : line
+        subMsgs[index] = index > 1 ? `\n${line}` : line
       } else {
         subMsgs[index] += `\n${line}`
       }
@@ -109,7 +109,7 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
     subMsgs.forEach((subMsg, index) => {
       setTimeout(() => {
         msn.sendTextMessage(senderId, subMsg)
-      }, index * 50)
+      }, index * 500)
     })
   }
 
