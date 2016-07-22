@@ -128,7 +128,7 @@ exports.receivedMessage = function receivedMessage (event) {
       // }
 
       if (resBody.text.indexOf('http://') > -1 || resBody.text.indexOf('https://') > -1) {
-        return  msn.sendBuyTicket(senderId, resBody.text)
+        return exports.sendBuyTicket(senderId, resBody.text)
       }
 
       const textLines = resBody.text.split('\n')
