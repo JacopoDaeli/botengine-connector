@@ -92,6 +92,9 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
     //   msn.sendTextMessage(senderId, text)
     // }
 
+    if (text.indexOf('http://') > -1 || text.indexOf('https://') > -1) {
+      return  msn.sendBuyTicket(senderId, text)
+    }
 
     const textLines = text.split('\n')
 

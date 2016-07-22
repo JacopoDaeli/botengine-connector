@@ -127,6 +127,10 @@ exports.receivedMessage = function receivedMessage (event) {
       //   exports.sendTextMessage(senderId, resBody.text)
       // }
 
+      if (resBody.text.indexOf('http://') > -1 || resBody.text.indexOf('https://') > -1) {
+        return  msn.sendBuyTicket(senderId, resBody.text)
+      }
+
       const textLines = resBody.text.split('\n')
 
       const subMsgs = []
@@ -243,6 +247,28 @@ exports.receivedPostback = function receivedPostback (event) {
     console.error(err.stack)
     exports.sendTextMessage(senderId, 'Oops! Something went wrong with your request.')
   })
+}
+
+exports.sendBuyTicket = function sendBuyTicket (recipientId, url) {
+  const messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: button,
+          text: 'Buy a ticket',
+          buttons: [{
+            type: web_url,
+            url,
+            title: 'Buy a ticket'
+          }]
+        }
+      }
+    }
+  }
 }
 
 exports.sendTextMessage = function sendTextMessage (recipientId, messageText) {
