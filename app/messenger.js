@@ -316,7 +316,7 @@ exports.sendPromptChoiceButtonStyle = function sendPromptChoiceButtonStyle (reci
 
 exports.callSendAPI = function callSendAPI (messageData) {
   request({
-    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    uri: 'https://graph.facebook.com/v2.7/me/messages',
     qs: { access_token: cm.pageAccessToken },
     method: 'POST',
     json: messageData
