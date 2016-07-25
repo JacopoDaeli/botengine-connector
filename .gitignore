@@ -46,3 +46,4 @@ jspm_packages
 
 # Deploy
 dokku-deploy
+deploy-whatson
