@@ -43,7 +43,9 @@ jspm_packages
 .env
 .env.staging
 .env.production
+.env.production.au
 
 # Deploy
 dokku-deploy
+dokku-deploy-au
 deploy-whatson
