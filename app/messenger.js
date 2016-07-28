@@ -138,10 +138,9 @@ exports.receivedMessage = function receivedMessage (event) {
       textLines.forEach((line, n) => {
         const index = Math.floor(n / 6)
         if (!subMsgs[index]) {
-          subMsgs[index] = `\n${line}`
-        } else {
-          subMsgs[index] += `\n${line}`
+          subMsgs[index] = `( page ${n + 1} )`
         }
+        subMsgs[index] += `\n${line}`
       })
 
       subMsgs.forEach((subMsg, index) => {
