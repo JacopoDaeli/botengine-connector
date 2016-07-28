@@ -109,7 +109,7 @@ app.post('/bot/v1.0/messages', jsonParser, (req, res) => {
     subMsgs.forEach((subMsg, index) => {
       setTimeout(() => {
         if (index > 0) {
-          subMsg = `( page ${index + 1} )\n` + subMsg
+          subMsg = `( page ${index + 1} )${subMsg}`
         }
         msn.sendTextMessage(senderId, subMsg)
       }, index * 500)

@@ -144,7 +144,7 @@ exports.receivedMessage = function receivedMessage (event) {
       subMsgs.forEach((subMsg, index) => {
         setTimeout(() => {
           if (index > 0) {
-            subMsg = `( page ${index + 1} )\n` + subMsg
+            subMsg = `( page ${index + 1} )${subMsg}`
           }
           exports.sendTextMessage(senderId, subMsg)
         }, index * 500)
