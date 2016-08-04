@@ -151,7 +151,7 @@ exports.receivedMessage = function receivedMessage (event) {
       })
     })
     .catch((err) => {
-      console.error(err.stack)
+      console.error(err.stack || err)
       exports.sendTextMessage(senderId, 'Oops! Something went wrong with your request.')
     })
 
@@ -244,7 +244,7 @@ exports.receivedPostback = function receivedPostback (event) {
     }
   })
   .catch((err) => {
-    console.error(err.stack)
+    console.error(err.stack || err)
     exports.sendTextMessage(senderId, 'Oops! Something went wrong with your request.')
   })
 }
